@@ -57,6 +57,7 @@ function App() {
   const [isClaudeStreaming, setIsClaudeStreaming] = useState(false);
   const [projectForSettings, setProjectForSettings] = useState<Project | null>(null);
   const [previousView, setPreviousView] = useState<View>("welcome");
+  const [selectedProjectPath, setSelectedProjectPath] = useState<string | null>(null);
 
   // Load projects on mount when in projects view
   useEffect(() => {
@@ -129,6 +130,16 @@ function App() {
   const handleNewSession = async () => {
     handleViewChange("claude-code-session");
     setSelectedSession(null);
+    setSelectedProjectPath(null);
+  };
+
+  /**
+   * Opens a new Claude Code session for a specific project
+   */
+  const handleNewSessionForProject = async (project: Project) => {
+    handleViewChange("claude-code-session");
+    setSelectedSession(null);
+    setSelectedProjectPath(project.path);
   };
 
   /**
@@ -378,6 +389,7 @@ function App() {
                           projects={projects}
                           onProjectClick={handleProjectClick}
                           onProjectSettings={handleProjectSettings}
+                          onNewSession={handleNewSessionForProject}
                           loading={loading}
                           className="animate-fade-in"
                         />
@@ -408,8 +420,10 @@ function App() {
         return (
           <ClaudeCodeSession
             session={selectedSession || undefined}
+            initialProjectPath={selectedProjectPath || undefined}
             onBack={() => {
               setSelectedSession(null);
+              setSelectedProjectPath(null);
               handleViewChange("projects");
             }}
             onStreamingChange={(isStreaming, sessionId) => {

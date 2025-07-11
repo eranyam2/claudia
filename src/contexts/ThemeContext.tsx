@@ -36,6 +36,10 @@ export function ThemeProvider({ children }: ThemeProviderProps): JSX.Element {
     const storedTheme = getStoredTheme();
     setThemeState(storedTheme);
     applyTheme(storedTheme);
+    
+    // Ensure body has the correct theme class immediately
+    document.body.setAttribute('data-theme', storedTheme);
+    
     setIsInitialized(true);
   }, []);
 
@@ -88,7 +92,8 @@ export function ThemeProvider({ children }: ThemeProviderProps): JSX.Element {
 
   return (
     <ThemeContext.Provider value={value}>
-      {children}
+      {/* Prevent flash of unstyled content */}
+      {isInitialized ? children : <div className="h-screen bg-background" />}
     </ThemeContext.Provider>
   );
 }

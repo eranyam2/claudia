@@ -16,14 +16,17 @@ export function ThemeToggle({ size = 'default', variant = 'ghost' }: ThemeToggle
       variant={variant}
       size={size}
       onClick={toggleTheme}
-      className="relative"
+      className="relative overflow-hidden transition-all duration-200 hover:bg-accent/50"
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
     >
-      {theme === 'dark' ? (
-        <Sun className="h-4 w-4 transition-all" />
-      ) : (
-        <Moon className="h-4 w-4 transition-all" />
-      )}
+      <div className="relative">
+        {theme === 'dark' ? (
+          <Sun className="h-4 w-4 transition-all duration-300 rotate-0 scale-100 text-yellow-500" />
+        ) : (
+          <Moon className="h-4 w-4 transition-all duration-300 rotate-0 scale-100 text-blue-400" />
+        )}
+      </div>
     </Button>
   );
 }
